@@ -1,0 +1,462 @@
+public class Taxi extends Thread
+{
+	//overview：出租车有自己的信誉值，编号，位置坐标，行驶状态，上一次移动的方向，自己正在执行的订单与自己所在的城市，分别依次对应credit,NO,state,positionX,positionY,lastMoveDirection,myOrder,myCity,这个类是平时在城市里按照一定规则闲逛，然后抢单，执行指令的一个类
+	
+	protected int credit;
+	protected int NO;
+	protected int state=0;
+	protected int positionX;
+	protected int positionY;
+	protected int lastMoveDir=0;
+	protected Order myOrder = null;
+	protected Map myCity = null;
+	//抽象函数：AF(c) = (credit,NO,state,positionX,positionY,lastMoveDirection,myOrder,myCity),where credit = c.credit,NO = c.NO,state= c.state,positionX= c.positionX,positionY= c.positionY,lastMoveDirection= c.lastMoveDir,myOrder= c.myOrder,myCity= c.myCity
+	//不变式：c.credit>=0;&&(c.NO>=0&&c.NO<=99);&&(c.state>0&&c.state<5);&&(c.positionX>=0&&c.positionX<=79);&&(c.positionY>=0&&c.positionY<=79);&&(c.lastMoveDir>=0&&c.lastMoveDir<=4);&&(if(c.state==3||c.state==4) c.myOrder==null);&&(c.myCity!=null);
+	public boolean repOK()
+	{
+		//EFFECTS：测试对象的实例化是否满足不变式
+		if(this.credit<0)
+			return false;
+		if(this.NO<0)
+			return false;
+		if(this.state>4||this.state<0)
+			return false;
+		if(this.positionX>79||this.positionX<0)
+			return false;
+		if(this.positionY>79||this.positionY<0)
+			return false;
+		if(this.lastMoveDir<0||this.lastMoveDir>4)
+			return false;
+		if(myCity == null)
+			return false;
+		return true;
+	}
+	public Taxi(int num,int positionX,int positionY,Map map)
+	//EFFECTS:初始化出租车
+	
+	public Map getMyCity()
+	//Effects:get the value of the variable
+	
+	public int getLastMoveDir()
+	//Effects:get the value of the variable
+
+	public void setLastMoveDir(int i)
+	//Modifies:指定的变量
+	//Effects:修改指定变量为指定值
+	
+	public int getNO()
+	//Effects:返回出租车编号
+
+	public int getCredit()
+	//Effects:返回出租车信誉值
+	
+	public int getDistance(int X,int Y)
+	//Effects:返回从出租车当前位置到目标位置的最短路径长度
+
+	public int getstate()
+	//Effects:返回出租车当前状态
+	public void setstate(int i)
+	//Effects:修改出租车当前状态
+	
+	public int getPositionX()
+	//Effects:返回出租车当前位置的X坐标
+
+	public int getPositionY()
+	//Effects:返回出租车当前位置的Y坐标
+
+	
+	public void setOrder(Order O)
+	//Effects:设置出租车当前执行的订单
+	
+	public void setMap(Map P)
+	//Effects:设置出租车所在的地图
+
+	public void randomDrive()
+	//Effects:当出租车处于空闲状态时，按照车流量最小原则行驶
+
+	public void gotoPosition1(int X,int Y)
+	//Effects:使出租车按照指导书的要求前往该位置
+
+	public void setCredit(int i)
+	//Effects:change the value of the variable
+
+	public void run()
+}
+public class HolyCrapTest extends Thread
+{
+	//overview：测试所有线程和整个系统
+	public static void main(String[] args)
+
+	public void run()
+
+	
+}
+public class TrafficSignal extends Thread
+{
+	//overview：红绿灯有控制南北向行驶的信号灯，有东西方向形式的信号等，分别对应NS与EW，每隔300毫秒变化一次状态
+	private boolean NS = false;
+	private boolean EW = true;
+	//抽象函数：AF(c) = (NS_trafficlight,EW_trafficlight),where NS_trafficlight = c.NS,EW_trafficlight = c.EW
+	//不变式：c.NS^c.EW ==true;
+	public boolean repOK()
+	{
+		return this.NS^this.EW;
+	}
+	public TrafficSignal()
+
+	public boolean getNS()
+	//EFFECTS：返回当前控制南北方向行驶的信号灯的状态
+	public boolean getEW()
+	//EFFECTS：返回当前控制东西方向行驶的信号灯的状态
+	public void run()
+
+}
+public class Order 
+{
+	//overview：订单的属性有：从订单产生已经度过的时间（毫秒），已经抢单的出租车数组，最终执行这台订单的出租车，订单创建是否成功,订单生成的坐标与，订单目的地坐标，分别依次对应 time,Taxis,theTaxi,success，ClientPositionX;ClientPositionY;DestinationX;DestinationY;
+	private int time = 0;
+	private ArrayList<Taxi> Taxis = new ArrayList<Taxi>();
+	private Taxi theTaxi;
+	private boolean success = true;
+	
+	private int ClientPositionX;
+	private int ClientPositionY;
+	private int DestinationX;
+	private int DestinationY;
+	//抽象函数：AF(C) = (time,Taxis,theTaxi,success，ClientPositionX;ClientPositionY;DestinationX;DestinationY;)where time = C.time;Taxis = C.Taxis,theTaxi = C.theTaxi,success = C.success，ClientPositionX = C.ClientPositionX;ClientPositionY = C.ClientPositionY;DestinationX = C.DestinationX;DestinationY = C.DestinationY;
+	//不变式：&&(C.time>=0);&&();&&();&&(C.success = (C.ClientPositionX>=0&&C.ClientPositionX<=79)&&(C.ClientPositionY>=0&&C.ClientPositionY<=79)&&(C.DestinationX>=0&&C.DestinationX<=79)&&(C.DestinationY>=0&&C.DestinationY<=79))&&(C.ClientPositionX>=0&&C.ClientPositionX<=79);&&(C.ClientPositionY>=0&&C.ClientPositionY<=79);&&(C.DestinationX>=0&&C.DestinationX<=79);&&(C.DestinationY>=0&&C.DestinationY<=79);
+	public boolean repOK()
+	{
+		if(this.time<0)
+			return false;
+		if(this.ClientPositionX>79||this.ClientPositionX<0)
+			return false;		
+		if(this.ClientPositionY>79||this.ClientPositionY<0)
+			return false;		
+		if(this.DestinationX>79||this.DestinationX<0)
+			return false;		
+		if(this.DestinationY>79||this.DestinationY<0)
+			return false;	
+		return true;
+	}
+	public Order(int CPX,int CPY,int DX,int DY)
+
+	
+	public int getClientX()
+	//Effects:返回顾客的X坐标
+
+	
+	public boolean getSuccess()
+	//Effects:返回订单创建的情况
+
+	public void setClientX(int clientPositionX)
+	//Effects:设置顾客的X坐标
+
+	
+	public int getDestinationX()
+	//Effects:get the value of DestinationX	
+
+	public void setDestinationX(int destinationX)
+	//Effects:change the value of the DestinationX
+
+	public int getDestinationY()
+	//Effects:get the value of DestinationY	
+
+	
+	public void setDestinationY(int destinationY)
+	//Effects:change the value of the DestinationY
+
+	public int getClientY()
+	//Effects:get the value of ClientPositionY
+
+
+	public void setClientY(int clientPositionY)
+	//Effects:change the value of the clientPositionY
+
+	
+	public boolean inTheOrder(Taxi taxi)
+	//Requires:the position of the order and the position of the taxi
+	//Effects:judge that whether the order is reachable for the taxi
+
+	
+	public void pushTaxi(Taxi taxi)
+	//Requires:an arraylist of taxi,a taxi
+	//Modifies:the arraylist of taxi in the object order
+	//Effects:push the taxi into the arraylist
+	
+	public int getTime()
+	//Effects:get the value of the variable
+	
+	public void chooseOne()
+	//Effects:get the very taxi that can execute the order
+
+	public void setTime()
+	//Effects:change the value of the variable
+
+	public Taxi getTheTaxi() 
+	//Effects:get the value of the variable,whether it is a null or an exist variable
+
+	public void setTheTaxi(Taxi theTaxi) 
+	//Effects:set the value of the variable named "theTaxi" in the object order
+	
+	
+}
+public class Uber extends Thread
+{
+	//overview：控制系统有自己的出租车数组，地图，和指令数组，分别对应，用于管理分配指令
+	private Taxi[] Taxis;
+	private Map map;
+	private ArrayList<Order> Orders;
+
+	//抽象函数：AF(c) = (Taxis,map,Orders) = where Taxis = c.Taxis , map = c.map , Orders = c.Orders
+	//不变式：c.Taxis !=null;&&c.map!= null;&&c.Orders!=null;
+
+	public Uber(Taxi[] taxis,Map map,ArrayList<Order> orders)
+	
+	public boolean repOK()
+	{
+		if(this.Taxis ==null)
+			return false;
+		if(this.map ==null)
+			return false;
+		if(this.Orders==null)
+			return false;
+		return true;
+	}
+	
+	public void run()
+
+}
+public class Map 
+{
+	//overview：地图的属性有：地图边长，地图道路二维数组，地图交叉情况二维数组，邻接矩阵二维数组，车流量三维数组，被关闭的道路的动态数组，地图是否被成功初始化，交通信号灯的二维数组,还有给高级出租车使用的地图和邻接矩阵
+	private int EDGE = 80;
+	private int[][] DigitalMap = new int[EDGE][EDGE];
+	private int[][] CruxMap = new int[EDGE][EDGE];
+	private int[][] AdjacentMatrix = new int[EDGE*EDGE][EDGE*EDGE];
+	private int[][][] Flow = new int[EDGE][EDGE][2];
+	private ArrayList<Position> closed = new ArrayList<Position>();
+	private boolean initialization = true;
+	private TrafficSignal[][] TraSig = new TrafficSignal[EDGE][EDGE];
+	
+	private int[][] DigitalMapFor = new int[EDGE][EDGE];
+	private int[][] AdjacentMatrixFor = new int[EDGE*EDGE][EDGE*EDGE];	
+	//抽象函数：AF(C) = (EDGE,DigitalMap,CruxMap,AdjacentMatrix,Flow,closed,initialization,TraSig,DigitalMapFor,AdjacentMatrixFor) where EDGE = C.EDGE,DigitalMap = C.DigitalMap,CruxMap = C.CruxMap,AdjacentMatrix = C.AdjacentMatrix,Flow = C.Flow,closed = C.closed,initialization = C.initialization,TraSig = C.TraSig,DigitalMapFor = c.DigitalMapFor,AdjacentMatrixFor = C.AdjacentMatrixFor
+	//不变式：C.EDGE ==80;&&C.DigitalMap !=null;&&C.CruxMap!=null;&&C.AdajacentMatrix != null;&&C.Flow!=null;&&C.closed != null;&&C.TrafficSignal!=null;&&C.DigitalMapFor!=null;&&C.AdjacentMatrixFor!=null
+	public boolean repOK()
+	{
+		for(int i = 0;i<EDGE;i++)
+		{
+			for(int j = 0;j<EDGE;j++)
+			{
+				if(this.DigitalMap[i][j]>3||this.DigitalMap[i][j]<0)
+					return false;
+			}		
+			
+		}
+		for(int i = 0;i<EDGE;i++)
+		{
+			for(int j = 0;j<EDGE;j++)
+			{
+				if(this.Crux[i][j]>1||this.Crux[i][j]<0)
+					return false;
+			}		
+			
+		}
+		for(int i = 0;i<EDGE*EDGE;i++)
+		{
+			for(int j = 0;j<EDGE*EDGE;j++)
+			{
+				if(this.AdjacentMatrix[i][j]>1||this.AdjacentMatrix[i][j]<0)
+					return false;
+			}		
+			
+		}
+
+		return true;
+		
+	}
+	public Map(File F,File Crux)
+	public int[][] getAdjacent()
+	//EFFECTS:获取整个AdjacentMatrix
+	public int[][] getAdjacentFor()
+	//EFFECTS：获取整个AdjacentMatrixFor
+	public int getAdjacentLine(int X,int Y)
+	//Effects:获取与这个点相邻的点的数量
+	public void initializeTraffic()
+	//Effects:根据CruxMap设置红绿灯
+	
+	public int getDigitalMap(int x,int y)
+	//Effects:返回指定点的道路连接情况
+	
+	public int BFS(Map map,int SourceX,int SourceY,int TargetX,int TargetY)
+	//Effects:return the length of the shortest way between this two coordinates in a BFS way
+
+	public void PrintPath(ArrayList<Position> store, int targetX, int targetY) 
+	//Effects:print the path to the target coordinate
+
+	
+	public int getMinFlowDirection(int X,int Y,int targetX,int targetY,int distance)
+	//Effects:get the first step of the shortest path which have the least car flow
+
+	public int getRandomDirection(int X,int Y)
+	//Effects:choose a road which have the least car flow
+
+	public boolean getTrafficSignal(int X,int Y,int dir)
+	//EFFECTS：获得指定点的指定方向的红绿灯情况
+	
+	public void closeRoad(int x,int y,int j)
+	//Effects:close a road
+
+	
+	public void openRoad(int x,int y,int j)
+	//Effects:open a road
+
+	public synchronized void AddFlow(int x,int y,int dir)
+	//Effects:change the flow of a certain road
+
+	public synchronized void SubFlow(int x,int y,int dir)
+	//Effects:change the flow of a certain road
+	
+	public int getFlow(int x,int y,int j)
+	//Effects:get the flow of a certain road
+
+	public boolean isInitialization()
+	//Effects:return the condition that the initialization
+}
+public class Position
+{
+	//overview:表示位置的一个有序偶，属性有X,Y,pathX,pathY,Path,dir
+	private int X;
+	private int Y;
+	private int pathX=-1;
+	private int pathY=-1;
+	private Position Path;
+	private int dir = 0;
+	//抽象函数：AF(C) = (X,Y,pathX,pathY,Path,dir) where X = C.X,Y = C.Y,pathX = C.pathX,pathY = C.pathY,Path = C.Path,dir = C.dir
+	//不变式：C.X<=79&&C.X>=0;&&;C.Y<=79&&C.Y>=0;&&C.dir>=0&&C.dir<=4;
+	public boolean repOK()
+	{
+		if(this.X>79||this.Y<0)
+			return false;		
+		if(this.Y>79||this.Y<0)
+			return false;		
+		if(this.dir>4||this.dir<0)
+			return false;	
+		return true;
+	}
+	public Position(int x,int y)
+	{
+		this.X = x;
+		this.Y = y;
+	}
+	
+	public int getX()
+	{
+		//Requires:the value of the variable is not a null
+		//Modifies:nothing
+		//Effects:get the value of the variable
+		return X;
+	}
+	public void setX(int x)
+	{
+		//Requires:some parameters
+		//Modifies:a variable
+		//Effects:change the value of the variable
+		X = x;
+	}
+	public int getY()
+	{
+		//Requires:the value of the variable is not a null
+		//Modifies:nothing
+		//Effects:get the value of the variable
+		return Y;
+	}
+	public void setY(int y)
+	{
+		//Requires:some parameters
+		//Modifies:a variable
+		//Effects:change the value of the variable
+		Y = y;
+	}
+	public int getPathX()
+	{
+		//Requires:the value of the variable is not a null
+		//Modifies:nothing
+		//Effects:get the value of the variable
+		return pathX;
+	}
+	public void setPathX(int pathX)
+	{
+		//Requires:some parameters
+		//Modifies:a variable
+		//Effects:change the value of the variable
+		this.pathX = pathX;
+	}
+	public int getPathY()
+	{
+		//Requires:the value of the variable is not a null
+		//Modifies:nothing
+		//Effects:get the value of the variable
+		return pathY;
+	}
+	public void setPathY(int pathY)
+	{
+		//Requires:some parameters
+		//Modifies:a variable
+		//Effects:change the value of the variable
+		this.pathY = pathY;
+	}
+
+	public int getDir() 
+	{
+		//Requires:the value of the variable is not a null
+		//Modifies:nothing
+		//Effects:get the value of the variable
+		return dir;
+	}
+
+	public void setDir(int dir) 
+	{
+		//Requires:some parameters
+		//Modifies:a variable
+		//Effects:change the value of the variable
+		this.dir = dir;
+	}
+
+	
+}
+public class TraceableTaxi extends Taxi
+{
+
+	//overview：出租车有自己的信誉值，编号，位置坐标，行驶状态，上一次移动的方向，自己正在执行的订单与自己所在的城市，分别依次对应credit,NO,state,positionX,positionY,lastMoveDirection,myOrder,myCity,这个类是平时在城市里按照一定规则闲逛，然后抢单，执行指令的一个类，然后这一种是高级出租车，可以行驶之前被关闭的道路，并且记录每一次接客的行驶路径
+	private ArrayList<ArrayList<Position>> list;
+	private int times;
+	
+	//抽象函数：AF(c) = (credit,NO,state,positionX,positionY,lastMoveDirection,myOrder,myCity,list,times),where credit = c.credit,NO = c.NO,state= c.state,positionX= c.positionX,positionY= c.positionY,lastMoveDirection= c.lastMoveDir,myOrder= c.myOrder,myCity= c.myCity,list = c.list,times = c.times;
+	//不变式：c.credit>=0;&&(c.NO>=0&&c.NO<=99);&&(c.state>0&&c.state<5);&&(c.positionX>=0&&c.positionX<=79);&&(c.positionY>=0&&c.positionY<=79);&&(c.lastMoveDir>=0&&c.lastMoveDir<=4);&&(if(c.state==3||c.state==4) c.myOrder==null);&&(c.myCity!=null);&&(c.times>=0);&&(c.list!=null)
+	
+	public TraceableTaxi(int num, int positionX, int positionY, Map map)
+	public boolean repOK()
+	{
+		return super.repO))
+	}
+	public Iterator getIterator(int i)
+	//EFFECTS：获得出租车某次接客的迭代器
+	
+	public int getTime()
+	//EFFECTS：获得相应变量的值
+
+	public void randomDrive()
+	//Effects:change the position of the taxi while it is idle
+	
+	public int getDistance(int X,int Y)
+	//Effects:返回从出租车当前位置到目标位置的最短路径长度
+
+	
+	public ArrayList<Position> gotoPosition(int X,int Y)		
+	//Effects:根据最短路径最小车流可行驶专用道路的原则，让出租车行驶，并记录出租车的位置移动
+
+	public void run()
+
+}
